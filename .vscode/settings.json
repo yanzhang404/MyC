@@ -3,6 +3,8 @@
         "*.c": "c",
         "iostream": "cpp",
         "stack": "cpp",
-        "unordered_map": "cpp"
+        "unordered_map": "cpp",
+        "vector": "cpp",
+        "ostream": "cpp"
     }
 }
