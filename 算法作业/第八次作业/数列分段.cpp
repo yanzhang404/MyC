@@ -1,43 +1,52 @@
-#include <iostream>
-#include <algorithm>
-#include <limits.h>
+#include<iostream>
+#include<cmath>
 using namespace std;
+const int MAXN=100001;
+int maxn = -1;
+int n, m, a[1000010];
+int l = maxn, r = 1000000000;
+int judge(int num){
+    int now = 0;
+    int tot = 0;
+    for(int i=1;i<=n;i++){
+        if(now+a[i]<num){
+            now += a[i];
+        }
+        else if(now+a[i]==num){
+            now = 0;
+            tot++;
+        }
+        else if(now+a[i]>num){
+            now = a[i];
+            tot++;
+        }
+    }
+    if(now) tot++;  //如果还有剩余的一个值，那么这个单独算一个段
+    if(tot>m)return 0;
+    else return 1;
 
-
-const int N = 1e5+10;
-int n, m;
-int q[N];
+}
 
 int main(){
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cin>>n>>m;
-    int sum;
-    int maxq = INT_MIN;
-    for(int i = 0; i < n; i++){
-        cin>>q[i];
-        sum = sum+q[i];
-        maxq = max(maxq, q[i]);
+    cin >> n >> m;
+    for(int i=1;i<=n;i++) {
+        cin >> a[i];
+        maxn = max(a[i], maxn);
     }
-    int l = maxq, r = sum;
-    while(l < r ){
-        int mid = (l + r) / 2;
-        int s = 0, num = 0;
-        for(int i = 0; i < n; i++){
-            if(s+q[i]<=mid){
-                s += q[i];
-            }
-            else{
-                s = q[i];
-                num++;
-            }
+    int l = maxn, r = 1000000000;
+    if(n==m){
+        cout << maxn;
+        return 0;
+    }
+    while(l<r){
+        int mid = (l+r) >> 1;
+        if(judge(mid)==1){
+            r = mid;
         }
-        if(num < m) r = mid;  //如果按照这个最大值得出的段数比我们规定的段数少，
-        else l = mid + 1;
+        else{
+            l = mid + 1;
+        }
     }
-    cout<<l<<endl;
+    cout << r;
     return 0;
-
-
-
 }
